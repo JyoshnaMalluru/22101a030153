@@ -1,22 +1,62 @@
 const express = require("express");
 const app = express();
 const port = 9876;
-// const path = require("path");
 
-// app.use(express.urlencoded({extended : true}));
-// app.set("view engine","ejs");
-// app.set("views",path.join(__dirname,"views"));
-// app.use(express.static(path.join(__dirname,"public")));
 let even = function evennumbers(n){
     let arr = [];
-    for(let i=0;i<=n;i++){
+    let cnt = 0;
+    let i=0;
+   while(cnt<n){
         if(i%2 == 0){
             arr.push(i);
+            cnt++;
         }
+        i++;
     }
     return arr;
 }
-
+let prime = function primenumbers(n){
+    let arr = [];
+    arr.push(2);
+    let cnt = 0;
+    let i=3;
+    while(cnt <n){
+        val = true;
+        for(let j=2;j<i;j++){
+            if(i%j == 0){
+                val = false;
+            }
+        }
+        if(val == true){
+            arr.push(i);
+            cnt++;
+        }
+        i++;
+    }
+    return arr;
+}
+let fib = function fibnumbers(n){
+    let arr = [];
+    let a =0;
+    arr.push(0);
+    let b = 1;
+    arr.push(1);
+    for(let i=3;i<=n;i++){
+        let c= a+b;
+        arr.push(c);
+        a= b;
+        b= c;
+    }
+    return arr;
+}
+let random = function randomnumbers(n){
+    let arr = [];
+    for(let i=1;i<=n;i++){
+        let val = Math.floor(Math.random()*100)+1;
+        arr.push(val);
+    }
+    return arr;
+}
 app.get("/numbers",(req,res)=>{
     // res.send("numbers");
     res.json({"key":"Number"});
@@ -26,10 +66,15 @@ app.get("/numbers/:id",(req,res)=>{
     let {id} = req.params;
     if(id == "e"){
         res.json({"numbers": even(10)})
+    }else if(id == "p"){
+        res.json({"numbers": prime(10)})
+    }else if(id == "f"){
+        res.json({"numbers": fib(10)})
+    }else if(id == "r"){
+        res.json({"numbers": random(10)})
     }else{
-         res.json({"key":id});
+         res.json({"key":"Not a valid number"});
     }
-    // console.log(id);
 })
 
 app.listen(port,()=>{
